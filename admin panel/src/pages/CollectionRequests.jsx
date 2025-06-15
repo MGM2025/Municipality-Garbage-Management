@@ -5,7 +5,7 @@ import dustbinIcon from "../assets/dustbinMarker.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faLocationDot, faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
-import MapComponent from "../../../user panel/src/components/MapComponent";
+import MapComponent from "../components/MapComponent";
 import { Marker } from "react-leaflet";
 // import siteLogo from "../assets/GreenSiteLogo.jpg";
 
