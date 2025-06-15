@@ -3,7 +3,7 @@ import React from "react";
 import NavBarComponent from "../components/NavBarComponent";
 import dustbinIcon from "../assets/dustbinMarker.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faLocationDot, faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import MapComponent from "../../../user panel/src/components/MapComponent";
 import { Marker } from "react-leaflet";
@@ -12,9 +12,9 @@ import { Marker } from "react-leaflet";
 const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 const CollectionRequests = () => {
-    const [userId, setUserId] = useState('');
     const [prevRequests, setPrevRequests] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(null);
+    const [selectedId, setSelectedId] = useState('');
 
     // custom icon for dustbin
     const dustbinMarker = new L.icon({
@@ -33,19 +33,41 @@ const CollectionRequests = () => {
         });
 
         const data = await response.json();
-        console.log(data.reqCollections)
 
         if(response.ok) {
             setPrevRequests(data.reqCollections);
         }
     }
 
+    const changeStatus = async (e) => {
+        const response = await fetch(`${backendURL}/reqCollection/editReqCollectionStatus/${selectedId}`, {
+            method: 'POST',
+            headers: {
+                'content-type' : 'application/json'
+            },
+            body: JSON.stringify({
+                status: e.target.value
+            })
+        });
+        const data = await response.json();
+
+        if(!response.ok) {
+            alert(data.message);
+        }
+        else{
+            setPrevRequests(prev =>
+                prev.map(req => 
+                    req.reqId == selectedId
+                    ? { ...req, status: e.target.value }
+                    : req                    
+                )
+            );
+        }
+        setSelectedId('');
+    }
+
     const openMapPopup = (location) => {
-        console.log("hii");
-        
         setSelectedLocation({lat: location.lat, lng: location.lng});
-        console.log("there");
-        
     }
 
     const closeMapPopup = () => {
@@ -94,7 +116,14 @@ const CollectionRequests = () => {
                                     <td>{new Date(eachReq.createdAt).toLocaleTimeString()} {new Date(eachReq.createdAt).toLocaleDateString()}</td>
                                     <td>{eachReq.fullName}</td>
                                     <td>{eachReq.address}</td>
-                                    <td>{eachReq.garbageType}</td>
+                                    <td>
+                                        {
+                                            eachReq.garbageType
+                                                .split("_")
+                                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                                .join(" ")
+                                        }
+                                    </td>
                                     <td>{eachReq.quantity}KG</td>
                                     <td className="flex gap-3 items-center">
                                         <div>
@@ -105,7 +134,29 @@ const CollectionRequests = () => {
                                             <FontAwesomeIcon icon={faLocationDot}/>
                                         </div>
                                     </td>
-                                    <td className={``}>{eachReq.status}</td>
+                                    <td className={``}>
+                                        {(selectedId == '' || (selectedId != eachReq.reqId)) && (
+                                            <div className="flex gap-2">
+                                                {(eachReq.status)}
+                                                <div
+                                                    className="text-green-800 cursor-pointer"
+                                                    onClick={() => setSelectedId(eachReq.reqId)}
+                                                >
+                                                    <FontAwesomeIcon icon={faPenToSquare} />
+                                                </div>
+                                            </div>
+                                        )}
+                                        {(selectedId == eachReq.reqId) && (
+                                            <div className="flex gap-2">
+                                                <select onChange={changeStatus} value={eachReq.status}>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="approved">Approved</option>
+                                                    <option value="collected">Collected</option>
+                                                    <option value="rejected">Rejected</option>
+                                                </select>
+                                            </div>
+                                        )}
+                                    </td>
                                     <td>{new Date(eachReq.collectionDate).toLocaleTimeString()} {new Date(eachReq.collectionDate).toLocaleDateString()}</td>
                                 </tr>
                             ))}

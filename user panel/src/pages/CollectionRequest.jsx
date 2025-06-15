@@ -18,7 +18,7 @@ const CollectionRequestPage = () => {
     const [phNo, setphNo] = useState('');
     const [address, setAddress] = useState('');
     const [quantity, setQuantity] = useState('');
-    const [garbageType, setGarbageType] = useState('dry');
+    const [garbageType, setGarbageType] = useState('domestic_dry');
     const [collectionDate, setCollectionDate] = useState('');
 
     // Event listeners on map
@@ -186,9 +186,12 @@ const CollectionRequestPage = () => {
                                             value={garbageType}
                                             onChange={handleGarbageTypeChange}
                                         >
-                                            <option value="dry">Dry</option>
-                                            <option value="wet">Wet</option>
-                                            <option value="mixed">Mixed</option>
+                                            <option value="domestic_dry">Domestic Dry</option>
+                                            <option value="domestic_wet">Domestic Wet</option>
+                                            <option value="domestic_mixed">Domestic Mixed</option>
+                                            <option value="commercial_dry">Commercial Dry</option>
+                                            <option value="commercial_wet">Commercial Wet</option>
+                                            <option value="commercial_mixed">Commercial Mixed</option>
                                         </select>
                                     </div>
                                 </div>
@@ -208,7 +211,7 @@ const CollectionRequestPage = () => {
                                 </div>
 
                                 <div className="flex flex-col gap-2">
-                                    <p>Estimated Garbage Quantity</p>
+                                    <p>Estimated Garbage Quantity (KG)</p>
                                     <div className="feedbackOptions p-3 border-2 border-gray-300 rounded-sm">
                                         <input
                                             type="text" className="outline-none"

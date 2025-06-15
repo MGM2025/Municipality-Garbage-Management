@@ -26,25 +26,31 @@ const genToken = require('../utils/genToken');
 class userController {
     async userRegister(req, res) {
         try{
-            const {fullName, username, email, password} = req.body;
+            const {regHoldingNo, regWardNo, regFullName, regEmail, regPassword} = req.body;
 
-            const user = await userModel.findOne({email});
+            const user = await userModel.findOne({email: regEmail});
             if(user) {
-                return res.status(409).json("You already have an account. Please log in");
+                return res.status(409).json({message: "You already have an account. Please log in"});
             }
 
-            const userNameCheck = await userModel.findOne({username});
-            if(userNameCheck) {
-                return res.status(409).json("Username is not available. Please try another");
+            const holdingNoCheck = await userModel.findOne({holdingNo: regHoldingNo});
+            if(holdingNoCheck) {
+                return res.status(409).json({message: "Your holding no is already registered!"});
+            }
+
+            const wardNoCheck = await userModel.findOne({wardNo: regWardNo});
+            if(wardNoCheck) {
+                return res.status(409).json({message: "Your ward no is already registered!"});
             }
 
             const salt = await bcrypt.genSalt(10);
-            const hash = await bcrypt.hash(password, salt);
+            const hash = await bcrypt.hash(regPassword, salt);
     
             const createdUser = await userModel.create({
-                fullName,
-                username,
-                email,
+                holdingNo: regHoldingNo,
+                wardNo: regWardNo,
+                fullName: regFullName,
+                email: regEmail,
                 password : hash
             });
 
@@ -63,15 +69,16 @@ class userController {
 
     async userLogin(req, res) {
         try {
-            const { email, password } = req.body;
-    
-            const user = await userModel.findOne({ email });
-    
+            const { loginEmail, loginPassword } = req.body;
+            
+            const user = await userModel.findOne({ email: loginEmail });
+            console.log(user)
+            
             if (!user) {
                 return res.status(401).json({ message: "Wrong email or password" });
             }
     
-            const result = await bcrypt.compare(password, user.password);
+            const result = await bcrypt.compare(loginPassword, user.password);
     
             if (result) {
                 const sentUser = await userModel.findById(user._id).select("-password");
@@ -84,8 +91,9 @@ class userController {
     
                 const tokenPayload = {
                     id: sentUser._id,
+                    holdingNo: sentUser.holdingNo,
+                    wardNo: sentUser.wardNo,
                     fullName: sentUser.fullName,
-                    username: sentUser.username,
                     email: sentUser.email,
                     profilePic: profilePicBase64,
                     isUser: sentUser.isUser,
