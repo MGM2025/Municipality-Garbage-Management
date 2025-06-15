@@ -23,16 +23,14 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 const server = http.createServer(app);
-const userURL = process.env.ADMIN_URL;
-const driverURL = process.env.DRIVER_URL;
+const userURL = process.env.USER_URL;
 const io = new Server(server, {
     cors: {
         origin: [
             "http://localhost:5173",
             "http://localhost:5174",
             "http://localhost:5175",
-            `${userURL}`,
-            `${driverURL}`
+            `${userURL}`
         ],
         methods: ['GET', 'POST', 'DELETE'],
         credentials: true
