@@ -27,7 +27,7 @@ const reqCollectionSchema = mongoose.Schema({
     },
     garbageType: {
         type: String,
-        enum: ["dry", "wet", "mixed"],
+        enum: ["domestic_dry", "domestic_wet", "domestic_mixed", "commercial_dry", "commercial_wet", "commercial_mixed"],
         default: undefined,
         required: true,
     },

@@ -43,6 +43,28 @@ class reqCollectionController {
             return res.status(500).json({ message: "Failed to fetch collection requests", error: err.message });
         }
     };
+
+    async editReqCollectionStatus(req, res) {
+        try {
+            const { status } = req.body;
+            const { reqId } = req.params;
+
+            const updatedReqCollection = await reqCollectionModel.findOneAndUpdate(
+                { reqId },
+                { status },
+                { new: true }
+            )
+
+            if(!updatedReqCollection) {
+                return res.status(404).json({ message: "No such collection request found" })
+            }
+
+            return res.status(200).json({ message: `Status updated from ${status} to ${updatedReqCollection.status}`, updatedReqCollection });
+        } catch (err) {
+            console.error('Edit collection request error:', err);
+            return res.status(500).json({ message: "Failed to edit collection requests", error: err.message });
+        }
+    }
 }
 
 

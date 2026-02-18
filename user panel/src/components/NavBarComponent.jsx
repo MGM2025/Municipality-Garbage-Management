@@ -14,7 +14,8 @@ const NavBarComponent = () => {
     const [token, setToken] = useState(null);
     const [profilePic, setProfilePic] = useState();
     const [fullName, setFullName] = useState('');
-    const [username, setUsername] = useState('');
+    const [holdingNo, setHoldingNo] = useState('');
+    const [wardNo, setWardNo] = useState('');
     const [email,setEmail] = useState('');
     const [editProfilePic, setEditProfilePic] = useState(null)
     const [editFullName, setEditFullName] = useState('');
@@ -177,7 +178,8 @@ const NavBarComponent = () => {
                 console.log(parsedToken)
                 setToken(parsedToken);
                 setFullName(parsedToken.fullName);
-                setUsername(parsedToken.username);
+                setHoldingNo(parsedToken.holdingNo);
+                setWardNo(parsedToken.wardNo);
                 setEmail(parsedToken.email);
                 setProfilePic(parsedToken.profilePic)
 
@@ -271,13 +273,13 @@ const NavBarComponent = () => {
                         <b>Name :</b> {fullName}
                     </div>
                     <div className="text-lg mb-2">
-                        <b>Username :</b> {username}
-                    </div>
-                    <div className="text-lg mb-2">
                         <b>Email ID :</b> {email}
                     </div>
                     <div className="text-lg mb-2">
-                        <b>Phone No. :</b> {}
+                        <b>Holding No. :</b> {holdingNo}
+                    </div>
+                    <div className="text-lg mb-2">
+                        <b>Ward No. :</b> {wardNo}
                     </div>
                 </div>
                 <div className="flex gap-4">

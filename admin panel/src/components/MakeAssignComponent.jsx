@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 const backendURL = import.meta.env.VITE_BACKEND_URL
 
-const MakeAssignComponent = ({path}) => {
+const MakeAssignComponent = ({ path = '', collectionReq = '' }) => {
     const [drivers, setDrivers] = useState([]);
     const [vehicles, setVehicles] = useState([]);
     const [assignment, setAssignment] = useState({});

@@ -96,7 +96,14 @@ const HistoryPage = () => {
                                 <tr key={idx}>
                                     <td>{new Date(eachReq.createdAt).toLocaleTimeString()} {new Date(eachReq.createdAt).toLocaleDateString()}</td>
                                     <td>{eachReq.address}</td>
-                                    <td>{eachReq.garbageType}</td>
+                                    <td>
+                                        {
+                                            eachReq.garbageType
+                                                .split("_")
+                                                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                                .join(" ")
+                                        }
+                                    </td>
                                     <td>{eachReq.quantity}KG</td>
                                     <td className="flex gap-3 items-center">
                                         <div>

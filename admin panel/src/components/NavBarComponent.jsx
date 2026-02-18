@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBell, faIdCard, faListCheck, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faBell, faIdCard, faListCheck, faListOl, faUser } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router-dom"
 import { faEdit, faXmark, faBars, faClockRotateLeft, faArrowRightFromBracket, faTruckFast, faTrashArrowUp, faUpload } from "@fortawesome/free-solid-svg-icons"
 import { IconLayoutDashboard, IconMap2 } from "@tabler/icons-react"
@@ -407,7 +407,7 @@ const NavBarComponent = () => {
                     </button>
                     <button className="navMenuOps w-60 py-2 px-4 text-lg text-start rounded-r-full flex items-center cursor-pointer" onClick={navigateRequests}>
                         <div className="w-10 text-xl pl-[2px]">
-                            <FontAwesomeIcon icon={faListCheck}/>
+                            <FontAwesomeIcon icon={faListOl}/>
                         </div>
                         <p>Collection Requests</p>
                     </button>

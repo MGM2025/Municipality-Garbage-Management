@@ -55,7 +55,7 @@ class reqCollectionController {
                 const reqCollection = await reqCollectionModel.find({ userId }).sort({ createdAt : -1 });
 
                 if(reqCollection.length == 0) {
-                    return res.status(200).json({ message: "No requests yet" });
+                    return res.status(200).json({ message: "No requests yet", reqCollection: [] });
                 }
                 return res.status(200).json({ message: "Requests fetched successfully", reqCollection });
             }
